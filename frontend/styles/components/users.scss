@@ -1,0 +1,68 @@
+@use "../helpers/variables" as *;
+@use "../helpers/mixins" as *;
+
+.users-container {
+    .container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+
+        @include large {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        @include medium {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        @include small {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @include mobile {
+            grid-template-columns: 1fr;
+        }
+
+        .user {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #18181a;
+            padding: 1.5rem 1rem;
+            border-radius: 12px;
+            border: 2px solid #6725dd;
+            box-shadow: 0 2px 10px rgba(103,37,221,0.10);
+            transition: box-shadow 0.2s, border-color 0.2s;
+
+            &:hover {
+                box-shadow: 0 4px 16px rgba(103,37,221,0.18);
+                border-color: #ededed;
+            }
+
+            img {
+                border-radius: 50%;
+                margin-bottom: 1rem;
+                width: 100px;
+                height: 100px;
+                object-fit: cover;
+                box-shadow: 0 2px 6px rgba(103,37,221,0.16);
+                background: #222;
+            }
+
+            h3 {
+                margin: 0.25rem 0 0.5rem 0;
+                font-size: 1.2rem;
+                color: #ededed;
+                font-weight: 600;
+                transition: color 0.2s;
+            }
+
+            p {
+                margin: 0;
+                font-size: 1rem;
+                color: #b9b6c3;
+                word-break: break-all;
+                text-align: center;
+                transition: color 0.2s;
+            }
+        }
+       
+    }
+}

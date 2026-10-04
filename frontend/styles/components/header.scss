@@ -1,0 +1,37 @@
+@use "../helpers/mixins" as *;
+@use "../helpers/variables" as *;
+
+.header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    .container {
+        @include flex(space-between, center, 20px);
+        .links {
+            @include flex($align-items: center, $gap: 5px);
+            a {
+                padding: 8px 15px;
+                font-size: 18px;
+                font-weight:  bold;
+                transition: 0.3s;
+                &:hover {
+                    color: $main-color;
+                }
+                &.disable {
+                    color: rgba($main-color, 0.8);
+                    pointer-events: none;
+                }
+            }
+        };
+        .profile-img-container {
+            a {
+                &.disable {
+                    pointer-events: none;
+                }
+                img {
+                    border-radius: 50%;
+                }
+            }
+        }
+    }
+}

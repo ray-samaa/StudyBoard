@@ -1,0 +1,27 @@
+@use "../../../styles/helpers/variables" as *;
+@use "../../../styles/helpers/mixins" as *;
+
+
+
+.user-container {
+    .container {
+        @include flex(center, center);
+        .box {
+            text-align: center;
+            img {
+                border-radius: 50%;
+                margin-bottom: 15px;
+            }
+            .username {
+                margin-bottom: 10px;
+                font-size: 20px;
+                font-weight: bold;
+            }
+            .email {
+                margin-bottom: 20px;
+                color: #aaa;
+            }
+
+        }
+    }
+}

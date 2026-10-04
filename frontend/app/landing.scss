@@ -1,0 +1,22 @@
+@use "../styles/helpers/variables" as *;
+@use "../styles/helpers/mixins" as *;
+
+
+.landing {
+    @include flex(center, center);
+    height: 100vh;
+    text-align: center;
+    h1 {
+        margin-bottom: 15px;
+    }
+
+    p {
+        font-size: 15px;
+        a {
+            transition: 0.3s;
+            &:hover {
+                font-weight: bold;
+            }
+        }
+    }
+}

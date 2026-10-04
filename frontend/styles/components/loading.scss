@@ -1,0 +1,8 @@
+@use "../helpers/variables" as *;
+@use "../helpers/mixins" as *;
+.loading {
+    position: fixed;
+    inset: 0;
+    background-color: $background-color;
+    z-index: 100;
+}
