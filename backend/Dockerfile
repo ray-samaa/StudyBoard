@@ -5,7 +5,7 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # انسخ requirements.txt
-COPY requirements.txt .
+COPY backend/requirements.txt .
 
 # نزّل المكتبات
 RUN pip install --no-cache-dir -r requirements.txt
