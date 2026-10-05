@@ -21,7 +21,7 @@ app.add_middleware(CORSMiddleware,
 )
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = BASE_DIR / "uploads"
 
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
