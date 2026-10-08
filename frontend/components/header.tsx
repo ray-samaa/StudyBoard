@@ -23,7 +23,7 @@ export default function Header({ pageName }: { pageName: string }) {
                 </div>
                 <div className="profile-img-container">
                     <Link href="/profile" className={pageName === "profile" ? "disable" : ""}>
-                        <Image src={user["profile_image_url"] ? user["profile_image_url"] : "/profile.jfif"} alt="profile.img" width={70} height={70} loading="eager" /> 
+                        <Image src={user["profile_image_url"] ? user["profile_image_url"] : "/profile.jpg"} alt="profile.img" width={70} height={70} loading="eager" /> 
                     </Link>
                 </div>
             </div>

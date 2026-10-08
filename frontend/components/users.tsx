@@ -59,7 +59,7 @@ export default function UsersComp() {
         <div className="container">
             {users.map((user) => (
                 <Link key={user["id"]} href={`/users/${user.username}`} className="user">
-                    <Image src={user["profile_image_url"] ? user["profile_image_url"] : "/profile.jfif"} alt="user.img" width={100} height={100} loading="eager" />
+                    <Image src={user["profile_image_url"] ? user["profile_image_url"] : "/profile.jpg"} alt="user.img" width={100} height={100} loading="eager" />
                     <h3>{user["username"]}</h3>
                     <p>{user["email"]}</p>
                 </Link>

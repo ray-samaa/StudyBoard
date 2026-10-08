@@ -15,7 +15,7 @@ import { uploadProfileImage } from "@/functions/api";
 
 export default function ProfileImage() {
     let {user, setUser, accessToken} = useAuth()
-    let [image, setImage] = useState<string>(user["profile_image_url"] || "/profile.jfif")
+    let [image, setImage] = useState<string>(user["profile_image_url"] || "/profile.jpg")
     let inputRef = useRef<HTMLInputElement>(null)
 
     function handleClickingImage() {
@@ -28,7 +28,7 @@ export default function ProfileImage() {
         if (file) {
             let data = await uploadProfileImage(accessToken, file)
             setUser({...user, "profile_image_url": data})
-            setImage(data || "/profile.jfif")
+            setImage(data || "/profile.jpg")
         };
 
     }
