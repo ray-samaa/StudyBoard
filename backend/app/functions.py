@@ -24,7 +24,8 @@ async def create_refresh_token(request: Request, response: Response, user_id: in
             value = refresh_token,
             max_age = ( (settings.REFRESH_TOKEN_EXPIRE_DAYS * 24) * 60) * 60,
             httponly = True,
-            samesite = "lax"
+            secure = True,
+            samesite = "none"
         )
 
 
