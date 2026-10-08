@@ -27,19 +27,12 @@ export default function ProfileImage() {
 
         if (file) {
             let data = await uploadProfileImage(accessToken, file)
-            setUser({...user, "profile_image_url": `${data["profile_image_url"]}`})
-            setImage(`${process.env.NEXT_PUBLIC_API_URL}${data}` || "/profile.jfif")
+            setUser({...user, "profile_image_url": data})
+            setImage(data || "/profile.jfif")
         };
 
     }
 
-    useEffect(() => {
-        if (user["profile_image_url"]) {
-            setImage(`${process.env.NEXT_PUBLIC_API_URL}${user["profile_image_url"]}`)
-        }
-
-    }, [user["profile_image_url"]])
-  
 
     return (
         <div className="profile-image-container">

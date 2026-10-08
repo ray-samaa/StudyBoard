@@ -26,6 +26,10 @@ class OtherUser(BaseModel):
     email: str
     profile_image_url: str | None
 
+class Users(BaseModel):
+    users: list[OtherUser]
+    has_more: bool
+
 class Task(BaseModel):
     id: int
     title: str

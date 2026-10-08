@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Depends, File, HTTPException, Path, Request, UploadFile, status
+from fastapi import APIRouter, Depends, File, HTTPException, Path, UploadFile, status
 from fastapi.security import OAuth2PasswordBearer
 
 from app.database import execute_query
 from app.functions import decode_access_token
-from app.models import OtherUser, User
+from app.models import OtherUser, User, Users
+from app.settings import settings
+from app.storage import supabase
 
 import uuid
 from pathlib import Path
@@ -11,8 +13,7 @@ from pathlib import Path
 
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-UPLOAD_DIR = BASE_DIR / "uploads"
+
 
 auth_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
@@ -22,11 +23,13 @@ users_router = APIRouter(
     tags = ["Users"]
 )
 
-@users_router.get("", response_model = list[OtherUser])
-async def get_users(access_token: str = Depends(auth_scheme)):
+@users_router.get("", response_model = Users)
+async def get_users(access_token: str = Depends(auth_scheme), limit: int = 20, offset: int = 0):
     user_data = await decode_access_token(access_token)
-    users = await execute_query("SELECT id, username, email, profile_image_url FROM users WHERE id != %s", (user_data["id"],))
-    return users
+    users = await execute_query("SELECT id, username, email, profile_image_url FROM users WHERE id != %s LIMIT %s OFFSET %s", (user_data["id"], limit + 1, offset))
+    if len(users) == limit + 1:
+        return {"users": users[:limit], "has_more": True}
+    return {"users": users, "has_more": False}
 
 @users_router.get("/me", response_model= User) 
 async def get_profile(access_token: str = Depends(auth_scheme)):
@@ -55,36 +58,46 @@ async def get_profile_image(access_token: str = Depends(auth_scheme), image: Upl
     if image.content_type not in types:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Only JPEG, Webp, PNG and JFIF images are allowed")
     
-    # Delete the old profile image
+    # get the old image url
     old_image = await execute_query("SELECT profile_image_url FROM users WHERE id = %s", (user_data["id"],))
 
-    if old_image and old_image[0]["profile_image_url"]:
-        old_path = old_image[0]["profile_image_url"]
-
-        old_filename = Path(old_path).name
-        old_file = UPLOAD_DIR / old_filename
-
-        if old_file.exists():
-            old_file.unlink()
-
-    # Create a unique file path
+    # Create a unique filename and a copy image
     extension = Path(image.filename).suffix
     filename = f"{uuid.uuid4()}{extension}"
 
-    file_path = UPLOAD_DIR / filename
+    file_data = await image.read()
 
     # Save the image
-    with open(file_path, "wb") as file:
-        file.write(await image.read())
+    print(4)
+    supabase.storage.from_(settings.SUPABASE_BUCKET).upload(
+        filename,
+        file_data,
+        {
+            "content-type": image.content_type,
+            "upsert": "false"
+        }
+    )
+    print(5)
 
     # Save the URL in the database
-    image_path = f"/uploads/{filename}"
+    print(6)
+    image_url = supabase.storage.from_(settings.SUPABASE_BUCKET).get_public_url(filename)
+    print(7)
 
-    await execute_query("UPDATE users SET profile_image_url = %s WHERE id = %s", (image_path, user_data["id"]))
+    await execute_query("UPDATE users SET profile_image_url = %s WHERE id = %s", (image_url, user_data["id"]))
+
+    # Delete the old profile image
+    if old_image and old_image[0]["profile_image_url"]:
+        old_url = old_image[0]["profile_image_url"]
+        old_path = Path(old_url).name
+        print(old_path)
+        supabase.storage.from_(settings.SUPABASE_BUCKET).remove([old_path])
+
+
 
     return {
         "message": "Image uploaded successfully",
-        "profile_image_url": image_path
+        "profile_image_url": image_url
     }
 
   

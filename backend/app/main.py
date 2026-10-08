@@ -1,8 +1,12 @@
-from pathlib import Path
+import truststore
+
+truststore.inject_into_ssl()
+
+
+
 
 
 from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -21,14 +25,10 @@ app.add_middleware(CORSMiddleware,
 )
 
 
-BASE_DIR = Path(__file__).resolve().parent
-UPLOAD_DIR = BASE_DIR / "uploads"
-
-app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
-
 @app.get("/")
-def say_hello():
+async def say_hello():
     return {"message": "Hello there!"}
+
 
 
 app.include_router(auth_router)

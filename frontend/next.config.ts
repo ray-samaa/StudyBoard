@@ -6,10 +6,9 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "localhost",
-        port: "8000",
-        pathname: "/uploads/**",
+        protocol: "https",
+        hostname: "nklxmrbjcjlzgsanwzxz.supabase.co",
+        pathname: "/storage/v1/object/public/**",
       },
     ],
     dangerouslyAllowLocalIP: true,

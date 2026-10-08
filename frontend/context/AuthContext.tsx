@@ -90,7 +90,7 @@ export function AuthProvider({ children }: any) {
     let getUserInfo = async (accessTokenInfo: AccessTokenInfoType) => {
         let userData = await getUserData(accessTokenInfo["access_token"])
         setUser({...userData})
-
+        
         let tasksData = await getTasks(accessTokenInfo["access_token"])
         setTasks([...tasksData])
     }
@@ -102,6 +102,9 @@ export function AuthProvider({ children }: any) {
                 let result: RefreshResult = await handleRefresh()
                 if (result["status"]) {
                     await getUserInfo(result["accessTokenInfo"])
+                    if (pathname === "/" || pathname === "/sign-up" || pathname === "/log-in") {
+                        router.replace("/dashboard")
+                    }
                 }
             } finally {
                 setIsLoading(false)

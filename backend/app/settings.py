@@ -15,6 +15,11 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_SECRET_KEY: str
     REFRESH_TOKEN_EXPIRE_DAYS: int
 
+    # storage settings
+    SUPABASE_BUCKET: str
+    SUPABASE_URL: str
+    SUPABASE_SECRET_KEY: str
+
 
 
     model_config = SettingsConfigDict(

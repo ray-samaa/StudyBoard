@@ -9,7 +9,7 @@ let tasksRequest: Promise<Tasks> | null = null
 type User = {id: number, username: string, email: string, "profile_image_url": string, date: string}
 type SetUserType = Dispatch<SetStateAction<User>>;
 type OtherUserType = {"id": number, "username": string, "email": string, "profile_image_url": string}
-type OtherUsersType = OtherUserType[]
+type OtherUsersType = {users: OtherUserType[], "has_more": boolean }
 
 type AccessTokenInfoType = { "access_token": string, "token_type": string, "expires_in": number}
 
@@ -174,14 +174,14 @@ export async function uploadProfileImage(accessToken: string, file: File) {
     }
 }
 
-export async function getUsers(accessToken: string): Promise<OtherUsersType> {
+export async function getUsers(accessToken: string, limit: number, offset: number): Promise<OtherUsersType> {
     if (usersRequest) {
         return usersRequest;
     }
 
     usersRequest = (async () => {
         try {
-            let response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
+            let response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users?limit=${limit}&offset=${offset}`, {
                 method: "GET",
                 credentials: "include",
                 headers: {

@@ -32,7 +32,7 @@ export default async function User({ params }: {params: Promise<{user: string}>}
       <div className="user-container">
         <div className="container">
             <div className="box">
-                <Image src={user["profile_image_url"] ? `${process.env.NEXT_PUBLIC_API_URL}${user["profile_image_url"]}` : "/profile.jfif"} className="user-img" alt="user.img" width={200} height={200} loading="eager"></Image>
+                <Image src={user["profile_image_url"] ? user["profile_image_url"] : "/profile.jfif"} className="user-img" alt="user.img" width={200} height={200} loading="eager"></Image>
                 <p className="username">{user["username"]}</p>
                 <p className="email">{user["email"]}</p>
             </div>
